@@ -1,0 +1,54 @@
+# use nvim 
+export EDITOR="nvim"
+export VISUAL="nvim"
+
+# aliases
+alias cd="z"
+alias l="eza --oneline --icons=always"
+alias ls="eza --icons=always"
+alias ll="eza --long --icons=always"
+alias la="eza --oneline --all --icons=always"
+alias lla="eza --long --all --icons=always"
+alias tree="eza --tree --level 1"
+alias cat="bat"
+alias vim="nvim"
+alias vi="nvim"
+alias neofetch="fastfetch"
+export BAT_THEME="gruvbox-dark"
+
+# fzf
+source <(fzf --zsh)
+
+# zoxide
+eval "$(zoxide init zsh)"
+
+# starship
+eval "$(starship init zsh)"
+
+# bun completions
+[ -s "/Users/noah/.bun/_bun" ] && source "/Users/noah/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# history setup
+HISTFILE=$HOME/.zhistory
+SAVEHIST=1000
+HISTSIZE=999
+setopt share_history
+setopt hist_expire_dups_first
+setopt hist_ignore_dups
+setopt hist_verify
+
+# completion using arrow keys (based on history)
+bindkey '^[[A' history-search-backward
+bindkey '^[[B' history-search-forward
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+export HOMEBREW_NO_ENV_HINTS=true
+# vi mode
+# bindkey -v
+
+. "$HOME/.local/bin/env"
