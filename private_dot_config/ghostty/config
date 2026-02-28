@@ -1,0 +1,4 @@
+theme = Gruvbox Dark Hard
+maximize
+font-size = 14
+term = xterm-256color
