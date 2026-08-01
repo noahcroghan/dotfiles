@@ -1,183 +1,283 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
-command_timeout = 1000
+# ─────────────────────────────────────────────────────────────
+#  Ayu prompt for Starship
+#  Switch themes by changing `palette` to ayu_dark | ayu_mirage | ayu_light
+#  Requires a Nerd Font (for powerline separators + glyphs)
+# ─────────────────────────────────────────────────────────────
+
+palette = "ayu_dark"
+add_newline = true
 
 format = """
-[](color_orange)\
+[](fg:ayu_bg1)\
 $os\
 $username\
-[](bg:color_yellow fg:color_orange)\
+$hostname\
+[](fg:ayu_bg1 bg:ayu_bg2)\
 $directory\
-[](fg:color_yellow bg:color_aqua)\
 $git_branch\
 $git_status\
-[](fg:color_aqua bg:color_blue)\
-$c\
-$cpp\
+[](fg:ayu_bg2 bg:ayu_bg1)\
+$nodejs\
 $rust\
 $golang\
-$nodejs\
-$php\
+$python\
 $java\
 $kotlin\
+$c\
+$dotnet\
+$php\
+$ruby\
+$lua\
+$zig\
 $haskell\
-$python\
-[](fg:color_blue bg:color_bg3)\
+$elixir\
 $docker_context\
 $conda\
-$pixi\
-[](fg:color_bg3 bg:color_bg1)\
+$cmd_duration\
 $time\
-[ ](fg:color_bg1)\
-$line_break$character"""
+[](fg:ayu_bg1)\
+$line_break\
+$character"""
 
-palette = 'gruvbox_dark'
+# ── Palettes ────────────────────────────────────────────────
 
-[palettes.gruvbox_dark]
-color_fg0 = '#fbf1c7'
-color_bg1 = '#3c3836'
-color_bg3 = '#665c54'
-color_blue = '#458588'
-color_aqua = '#689d6a'
-color_green = '#98971a'
-color_orange = '#d65d0e'
-color_purple = '#b16286'
-color_red = '#cc241d'
-color_yellow = '#d79921'
+[palettes.ayu_dark]
+ayu_bg     = "#0b0e14"
+ayu_bg1    = "#151a23"
+ayu_bg2    = "#232a35"
+ayu_fg     = "#bfbdb6"
+ayu_muted  = "#6c7380"
+ayu_accent = "#e6b450"
+ayu_yellow = "#ffb454"
+ayu_orange = "#ff8f40"
+ayu_red    = "#d95757"
+ayu_pink   = "#f07178"
+ayu_green  = "#aad94c"
+ayu_blue   = "#59c2ff"
+ayu_teal   = "#39bae6"
+ayu_cyan   = "#95e6cb"
+ayu_purple = "#d2a6ff"
+ayu_tan    = "#e6b673"
+
+[palettes.ayu_mirage]
+ayu_bg     = "#1f2430"
+ayu_bg1    = "#242b38"
+ayu_bg2    = "#323945"
+ayu_fg     = "#cccac2"
+ayu_muted  = "#707a8c"
+ayu_accent = "#ffcc66"
+ayu_yellow = "#ffd173"
+ayu_orange = "#ffa759"
+ayu_red    = "#ff6666"
+ayu_pink   = "#f28779"
+ayu_green  = "#d5ff80"
+ayu_blue   = "#73d0ff"
+ayu_teal   = "#5ccfe6"
+ayu_cyan   = "#95e6cb"
+ayu_purple = "#dfbfff"
+ayu_tan    = "#ffdfb3"
+
+[palettes.ayu_light]
+ayu_bg     = "#fcfcfc"
+ayu_bg1    = "#eceff2"
+ayu_bg2    = "#dee1e6"
+ayu_fg     = "#5c6166"
+ayu_muted  = "#8a9199"
+ayu_accent = "#ffaa33"
+ayu_yellow = "#f2ae49"
+ayu_orange = "#fa8d3e"
+ayu_red    = "#e65050"
+ayu_pink   = "#f07171"
+ayu_green  = "#86b300"
+ayu_blue   = "#399ee6"
+ayu_teal   = "#55b4d4"
+ayu_cyan   = "#4cbf99"
+ayu_purple = "#a37acc"
+ayu_tan    = "#e6ba7e"
+
+# ── Segment 1: os / user / host ─────────────────────────────
 
 [os]
 disabled = false
-style = "bg:color_orange fg:color_fg0"
+style = "bg:ayu_bg1 fg:ayu_accent"
+format = "[ $symbol]($style)"
 
 [os.symbols]
-Windows = "󰍲"
-Ubuntu = "󰕈"
-SUSE = ""
-Raspbian = "󰐿"
-Mint = "󰣭"
-Macos = "󰀵"
-Manjaro = ""
-Linux = "󰌽"
-Gentoo = "󰣨"
-Fedora = "󰣛"
-Alpine = ""
-Amazon = ""
-Android = ""
-AOSC = ""
-Arch = "󰣇"
-Artix = "󰣇"
-EndeavourOS = ""
-CentOS = ""
-Debian = "󰣚"
-Redhat = "󱄛"
-RedHatEnterprise = "󱄛"
-Pop = ""
+Alpine = ""
+Arch = ""
+Debian = ""
+Fedora = ""
+Linux = ""
+Macos = ""
+NixOS = ""
+Raspbian = ""
+Redhat = ""
+Ubuntu = ""
+Windows = ""
 
 [username]
-show_always = true
-style_user = "bg:color_orange fg:color_fg0"
-style_root = "bg:color_orange fg:color_fg0"
-format = '[ $user ]($style)'
+show_always = false          # only shows for root or over SSH
+style_user = "bg:ayu_bg1 fg:ayu_fg"
+style_root = "bg:ayu_bg1 fg:ayu_red bold"
+format = "[ $user]($style)"
+
+[hostname]
+ssh_only = true
+style = "bg:ayu_bg1 fg:ayu_tan"
+format = "[@$hostname]($style)"
+
+# ── Segment 2: directory + git ──────────────────────────────
 
 [directory]
-style = "fg:color_fg0 bg:color_yellow"
-format = "[ $path ]($style)"
+style = "bg:ayu_bg2 fg:ayu_blue bold"
+format = "[ $path ]($style)[$read_only]($read_only_style)"
+read_only = " "
+read_only_style = "bg:ayu_bg2 fg:ayu_red"
+home_symbol = "~"
 truncation_length = 3
 truncation_symbol = "…/"
+truncate_to_repo = true
 
 [directory.substitutions]
-"Documents" = "󰈙 "
-"Downloads" = " "
-"Music" = "󰝚 "
-"Pictures" = " "
-"Developer" = "󰲋 "
+"Documents" = "󰈙"
+"Downloads" = ""
+"Music" = "󰝚"
+"Pictures" = ""
+"Developer" = "󰲋"
+"Projects" = ""
 
 [git_branch]
-symbol = ""
-style = "bg:color_aqua"
-format = '[[ $symbol $branch ](fg:color_fg0 bg:color_aqua)]($style)'
+symbol = ""
+style = "bg:ayu_bg2 fg:ayu_green"
+format = "[$symbol $branch ]($style)"
+truncation_length = 24
+truncation_symbol = "…"
 
 [git_status]
-style = "bg:color_aqua"
-format = '[[($all_status$ahead_behind )](fg:color_fg0 bg:color_aqua)]($style)'
+style = "bg:ayu_bg2 fg:ayu_pink"
+format = '([$all_status$ahead_behind ]($style))'
+conflicted = "= "
+ahead = "⇡${count} "
+behind = "⇣${count} "
+diverged = "⇕⇡${ahead_count}⇣${behind_count} "
+untracked = "?${count} "
+stashed = "\\$${count} "
+modified = "!${count} "
+staged = "+${count} "
+renamed = "»${count} "
+deleted = "✘${count} "
+
+# ── Segment 3: toolchains, duration, clock ──────────────────
 
 [nodejs]
-symbol = ""
-style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
-
-[c]
-symbol = " "
-style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
-
-[cpp]
-symbol = " "
-style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+symbol = ""
+style = "bg:ayu_bg1 fg:ayu_green"
+format = "[ $symbol $version ]($style)"
 
 [rust]
-symbol = ""
-style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+symbol = ""
+style = "bg:ayu_bg1 fg:ayu_orange"
+format = "[ $symbol $version ]($style)"
 
 [golang]
-symbol = ""
-style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
-
-[php]
-symbol = ""
-style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
-
-[java]
-symbol = ""
-style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
-
-[kotlin]
-symbol = ""
-style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
-
-[haskell]
-symbol = ""
-style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+symbol = ""
+style = "bg:ayu_bg1 fg:ayu_teal"
+format = "[ $symbol $version ]($style)"
 
 [python]
-symbol = ""
-style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
+symbol = ""
+style = "bg:ayu_bg1 fg:ayu_yellow"
+format = '[ $symbol $version( \($virtualenv\)) ]($style)'
+
+[java]
+symbol = ""
+style = "bg:ayu_bg1 fg:ayu_pink"
+format = "[ $symbol $version ]($style)"
+
+[kotlin]
+symbol = ""
+style = "bg:ayu_bg1 fg:ayu_purple"
+format = "[ $symbol $version ]($style)"
+
+[c]
+symbol = ""
+style = "bg:ayu_bg1 fg:ayu_blue"
+format = "[ $symbol $version ]($style)"
+
+[dotnet]
+symbol = "󰪮"
+style = "bg:ayu_bg1 fg:ayu_purple"
+format = "[ $symbol $tfm ]($style)"
+
+[php]
+symbol = ""
+style = "bg:ayu_bg1 fg:ayu_purple"
+format = "[ $symbol $version ]($style)"
+
+[ruby]
+symbol = ""
+style = "bg:ayu_bg1 fg:ayu_red"
+format = "[ $symbol $version ]($style)"
+
+[lua]
+symbol = ""
+style = "bg:ayu_bg1 fg:ayu_blue"
+format = "[ $symbol $version ]($style)"
+
+[zig]
+symbol = ""
+style = "bg:ayu_bg1 fg:ayu_yellow"
+format = "[ $symbol $version ]($style)"
+
+[haskell]
+symbol = ""
+style = "bg:ayu_bg1 fg:ayu_purple"
+format = "[ $symbol $version ]($style)"
+
+[elixir]
+symbol = ""
+style = "bg:ayu_bg1 fg:ayu_purple"
+format = "[ $symbol $version ]($style)"
 
 [docker_context]
-symbol = ""
-style = "bg:color_bg3"
-format = '[[ $symbol( $context) ](fg:#83a598 bg:color_bg3)]($style)'
+symbol = ""
+style = "bg:ayu_bg1 fg:ayu_teal"
+format = "[ $symbol $context ]($style)"
+only_with_files = true
 
 [conda]
-style = "bg:color_bg3"
-format = '[[ $symbol( $environment) ](fg:#83a598 bg:color_bg3)]($style)'
+symbol = ""
+style = "bg:ayu_bg1 fg:ayu_cyan"
+format = "[ $symbol $environment ]($style)"
+ignore_base = true
 
-[pixi]
-style = "bg:color_bg3"
-format = '[[ $symbol( $version)( $environment) ](fg:color_fg0 bg:color_bg3)]($style)'
+[cmd_duration]
+min_time = 500
+style = "bg:ayu_bg1 fg:ayu_tan"
+format = "[  $duration ]($style)"
 
 [time]
-disabled = true
-time_format = "%R"
-style = "bg:color_bg1"
-format = '[[  $time ](fg:color_fg0 bg:color_bg1)]($style)'
-
-[line_break]
 disabled = false
+time_format = "%I:%M %p"
+style = "bg:ayu_bg1 fg:ayu_muted"
+format = "[  $time ]($style)"
+
+# ── Prompt line ─────────────────────────────────────────────
 
 [character]
-disabled = false
-success_symbol = '[](bold fg:color_green)'
-error_symbol = '[](bold fg:color_red)'
-vimcmd_symbol = '[](bold fg:color_green)'
-vimcmd_replace_one_symbol = '[](bold fg:color_purple)'
-vimcmd_replace_symbol = '[](bold fg:color_purple)'
-vimcmd_visual_symbol = '[](bold fg:color_yellow)'
+success_symbol = "[❯](bold ayu_accent)"
+error_symbol = "[❯](bold ayu_red)"
+vicmd_symbol = "[❮](bold ayu_purple)"
+
+# ── Quiet modules ───────────────────────────────────────────
+
+[package]
+disabled = true
+
+[aws]
+disabled = true
+
+[gcloud]
+disabled = true
